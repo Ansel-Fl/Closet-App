@@ -55,8 +55,8 @@ That turned into six tables. One design choice: an outfit has many items, and on
 - 
 ## What's next
 
-- Add real data and report queries
-- PowerShell script to export a weekly report
+- Run SQL Reports
+- PowerShell script automation on local storage
 - A simple web app so she can browse her closet and plan outfits from her phone
 
 
