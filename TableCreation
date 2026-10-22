@@ -215,3 +215,77 @@ COMMIT;
 SELECT *
 FROM items
 ORDER BY item_id ASC;
+
+--Outfits and Assigning CROSS JOIN
+
+INSERT INTO outfits (outfit_name, occasion) VALUES ('Sunday Church', 'Church');
+INSERT INTO outfits (outfit_name, occasion) VALUES ('Date Night', 'Date');
+INSERT INTO outfits (outfit_name, occasion) VALUES ('Coffee Run', 'Errands');
+INSERT INTO outfits (outfit_name, occasion) VALUES ('Country Concert', 'Concert');
+INSERT INTO outfits (outfit_name, occasion) VALUES ('Workout', 'Gym');
+INSERT INTO outfits (outfit_name, occasion) VALUES ('Summer Day', 'Casual');
+INSERT INTO outfits (outfit_name, occasion) VALUES ('Fall Day Out', 'Outing');
+ 
+INSERT INTO outfit_items (outfit_id, item_id)
+SELECT o.outfit_id, i.item_id
+FROM outfits o
+CROSS JOIN items i
+WHERE o.outfit_name = 'Sunday Church'
+  AND i.item_name IN ('Floral Wrap Dress', 'Tecovas Annie Boot (Black)', 'Gold Hoop Earrings');
+ 
+INSERT INTO outfit_items (outfit_id, item_id)
+SELECT o.outfit_id, i.item_id
+FROM outfits o
+CROSS JOIN items i
+WHERE o.outfit_name = 'Date Night'
+  AND i.item_name IN ('Black Mini Dress', 'Faux Leather Jacket', 'Tecovas Annie Boot (Black)', 'Shoulder Bag');
+ 
+INSERT INTO outfit_items (outfit_id, item_id)
+SELECT o.outfit_id, i.item_id
+FROM outfits o
+CROSS JOIN items i
+WHERE o.outfit_name = 'Coffee Run'
+  AND i.item_name IN ('Cropped Sweater', 'Levi''s 501 Jeans', 'Adidas Gazelle', 'Claw Clip');
+ 
+INSERT INTO outfit_items (outfit_id, item_id)
+SELECT o.outfit_id, i.item_id
+FROM outfits o
+CROSS JOIN items i
+WHERE o.outfit_name = 'Country Concert'
+  AND i.item_name IN ('Sleeveless Buttoned Top', 'Agolde 90s Pinch Waist Jeans', 'Tecovas Annie Boot (Red)');
+ 
+INSERT INTO outfit_items (outfit_id, item_id)
+SELECT o.outfit_id, i.item_id
+FROM outfits o
+CROSS JOIN items i
+WHERE o.outfit_name = 'Workout'
+  AND i.item_name IN ('Align Leggings', 'Oversized Long Sleeve', 'New Balance 9060s');
+ 
+INSERT INTO outfit_items (outfit_id, item_id)
+SELECT o.outfit_id, i.item_id
+FROM outfits o
+CROSS JOIN items i
+WHERE o.outfit_name = 'Summer Day'
+  AND i.item_name IN ('Beverly Hills Tank Top', 'Linen Drawstring Pants', 'Birkenstock Clogs', 'Oversized Sunglasses');
+ 
+INSERT INTO outfit_items (outfit_id, item_id)
+SELECT o.outfit_id, i.item_id
+FROM outfits o
+CROSS JOIN items i
+WHERE o.outfit_name = 'Fall Day Out'
+  AND i.item_name IN ('Striped Blue Long Sleeve', 'Straight Leg Jeans', 'Classic Trench Coat', 'New Balance 530');
+ 
+COMMIT;
+
+INSERT INTO wear_log (item_id, worn_date, occasion)
+SELECT item_id, DATE '2026-08-14', 'Gym'
+FROM items
+WHERE item_name IN ('Align Leggings', 'Oversized Long Sleeve', 'New Balance 9060s');
+
+
+INSERT INTO wear_log (item_id, worn_date, occasion)
+SELECT item_id, DATE '2026-09-27', 'Errands'
+FROM items
+WHERE item_name IN ('Oversized Long Sleeve', 'Effortless Pant', 'New Balance 530', 'Black Leather Tote');
+
+COMMIT;
