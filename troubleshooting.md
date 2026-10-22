@@ -72,3 +72,22 @@ Then I ran COMMIT to save it.
 
 **Fix:** No fix needed. Gaps in ID numbers are normal, because an ID is a label, not a count. I can't renumber them anyway.
 **What I'd do differently:** Check that a statement is correct before running it, and not assume a gap in IDs means data is missing. Something that looks like a bug can be normal system behavior so the first step is understanding why it happens.
+
+---
+
+## 6. Learned: CROSS JOIN
+
+**What I was trying to do:** Link items to outfits in outfit_items without looking up every ID number by hand.
+
+**What I learned:** A CROSS JOIN pairs every row in one table with every row in another. For example, 7 outfits × 45 items = 315 combinations. Adding a WHERE keeps the pairs I was looking for, like the items in one outfit:
+
+INSERT INTO outfit_items (outfit_id, item_id)
+SELECT o.outfit_id, i.item_id
+FROM outfits o
+CROSS JOIN items i
+WHERE o.outfit_name = 'Date Night'
+  AND i.item_name IN ('Black Mini Dress', 'Shoulder Bag');
+
+The o and i are aliases, short names for the tables, so o.outfit_id means the outfit_id column from outfits.
+
+**Takeaway:** CROSS JOIN lets SQL find the IDs by name. It should have a WHERE or it creates every possible combination.
