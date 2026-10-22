@@ -51,7 +51,7 @@ That turned into six tables. One design choice: an outfit has many items, and on
 - Using constraints (NOT NULL, UNIQUE, CHECK) to keep data clean
 - Reading Oracle error messages and fixing the first error first, since later errors are often side effects
 - Using COMMIT to save data changes and ROLLBACK to undo them.
-- Cross JOIN to link Rows specifically connecting to the Outfits Table
+- Cross JOIN to link Rows specifically connecting to the Outfits Table (Creating Separate Aliasases) 
 - 
 ## What's next
 
