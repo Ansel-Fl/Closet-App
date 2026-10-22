@@ -1,0 +1,217 @@
+-- Tables
+
+CREATE TABLE categories (
+    category_id    NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    category_name  VARCHAR2(20) NOT NULL UNIQUE
+);
+
+CREATE TABLE locations (
+    location_id    NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    location_name  VARCHAR2(20) NOT NULL UNIQUE
+);
+
+CREATE TABLE items (
+    item_id        NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    item_name      VARCHAR2(100) NOT NULL,
+    category_id    NUMBER NOT NULL REFERENCES categories (category_id),
+    location_id    NUMBER REFERENCES locations (location_id),
+    color          VARCHAR2(20),
+    season         VARCHAR2(20) CHECK (season IN ('Spring', 'Summer', 'Fall', 'Winter', 'All')),
+    brand          VARCHAR2(30),
+    purchase_date  DATE,
+    price          NUMBER(8, 2)
+);
+
+CREATE TABLE outfits (
+    outfit_id      NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    outfit_name    VARCHAR2(100) NOT NULL,
+    occasion       VARCHAR2(50)
+);
+
+CREATE TABLE outfit_items (
+    outfit_id      NUMBER NOT NULL REFERENCES outfits (outfit_id),
+    item_id        NUMBER NOT NULL REFERENCES items (item_id),
+    PRIMARY KEY (outfit_id, item_id)
+);
+
+CREATE TABLE wear_log (
+    wear_id        NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    item_id        NUMBER NOT NULL REFERENCES items (item_id),
+    worn_date      DATE NOT NULL,
+    occasion       VARCHAR2(50)
+);
+
+-- Categories
+-- 1 Tops, 2 Pants, 3 Dresses, 4 Shoes, 5 Outerwear, 6 Accessories
+
+INSERT INTO categories (category_name) VALUES ('Tops');
+INSERT INTO categories (category_name) VALUES ('Pants');
+INSERT INTO categories (category_name) VALUES ('Dresses');
+INSERT INTO categories (category_name) VALUES ('Shoes');
+INSERT INTO categories (category_name) VALUES ('Outerwear');
+INSERT INTO categories (category_name) VALUES ('Accessories');
+
+-- Locations
+-- 1 Closet, 2 Dresser, 3 Storage Bin, 4 Laundry
+
+INSERT INTO locations (location_name) VALUES ('Closet');
+INSERT INTO locations (location_name) VALUES ('Dresser');
+INSERT INTO locations (location_name) VALUES ('Storage Bin');
+INSERT INTO locations (location_name) VALUES ('Laundry');
+
+COMMIT;
+
+-- Tops
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Crop Top', 1, 1, 'Black', 'Spring', 'Zara', 15);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Cropped Sweater', 1, 1, 'Coffee', 'Fall', 'Brandy Melville', 20);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Sleeveless Buttoned Top', 1, 1, 'Black', 'Spring', 'Wild Fable', 15);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Striped Blue Long Sleeve', 1, 1, 'Blue', 'Winter', 'Altar''d State', 32);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Oversized Long Sleeve', 1, 1, 'White', 'Winter', 'We the Free', 45);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Beverly Hills Tank Top', 1, 2, 'Red', 'Summer', 'Garage', 8);
+
+-- Pants
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Agolde 90s Pinch Waist Jeans', 2, 3, 'Light Wash', 'All', 'Agolde', 198);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Levi''s 501 Jeans', 2, 2, 'Medium Wash', 'All', 'Levi''s', 98);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Straight Leg Jeans', 2, 4, 'Dark Wash', 'Fall', 'Madewell', 138);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Effortless Pant', 2, 1, 'Black', 'All', 'Aritzia', 148);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Wide Leg Trousers', 2, 1, 'Cream', 'Spring', 'Aritzia', 148);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Linen Drawstring Pants', 2, 1, 'White', 'Summer', 'Quince', 50);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Align Leggings', 2, 3, 'Black', 'All', 'Lululemon', 98);
+
+-- Dresses
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Satin Slip Midi Dress', 3, 1, 'Champagne', 'All', 'Reformation', 178);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Linen Maxi Dress', 3, 2, 'White', 'Summer', 'Reformation', 218);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Black Mini Dress', 3, 1, 'Black', 'All', 'Zara', 50);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Floral Wrap Dress', 3, 1, 'Blue', 'Spring', 'Abercrombie', 90);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Ribbed Bodycon Dress', 3, 4, 'Brown', 'Fall', 'Skims', 88);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Knit Midi Dress', 3, 4, 'Oatmeal', 'Winter', 'Aritzia', 128);
+
+-- Shoes
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Birkenstock Clogs', 4, 1, 'Tan', 'All', 'Birkenstock', 165);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('New Balance 1080s', 4, 3, 'Gray', 'All', 'New Balance', 165);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('New Balance 9060s', 4, 2, 'Creme', 'All', 'New Balance', 160);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('New Balance 530', 4, 4, 'White', 'All', 'New Balance', 110);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Adidas Gazelle', 4, 1, 'Brown', 'All', 'Adidas', 110);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Tecovas Annie Boot (Black)', 4, 2, 'Black', 'Fall', 'Tecovas', 375);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Tecovas Annie Boot (Red)', 4, 1, 'Red', 'Fall', 'Tecovas', 375);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Veja Campo Sneakers', 4, 3, 'White', 'All', 'Veja', 150);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Leather Loafers', 4, 1, 'Black', 'Fall', 'Sam Edelman', 140);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Strappy Heels', 4, 4, 'Black', 'All', 'Steve Madden', 90);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('UGG Tasman Slippers', 4, 2, 'Chestnut', 'Winter', 'UGG', 110);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Slide Sandals', 4, 3, 'Tan', 'Summer', 'Dolce Vita', 90);
+
+-- Outerwear
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Long Wool Coat', 5, 1, 'Camel', 'Winter', 'Aritzia', 398);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Cropped Puffer', 5, 2, 'Black', 'Winter', 'Aritzia', 250);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Classic Trench Coat', 5, 1, 'Tan', 'Fall', 'Abercrombie', 180);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Oversized Denim Jacket', 5, 4, 'Light Wash', 'Spring', 'Madewell', 138);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Faux Leather Jacket', 5, 1, 'Black', 'Fall', 'Zara', 70);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Cropped Blazer', 5, 1, 'Black', 'All', 'Zara', 70);
+
+-- Accessories
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Gold Hoop Earrings', 6, 2, 'Gold', 'All', 'Mejuri', 98);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Dainty Gold Necklace', 6, 1, 'Gold', 'All', 'Mejuri', 148);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Black Leather Tote', 6, 4, 'Black', 'All', 'Madewell', 178);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Shoulder Bag', 6, 1, 'Brown', 'All', 'Coach', 295);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Claw Clip', 6, 2, 'Tortoise', 'All', 'Free People', 18);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Oversized Sunglasses', 6, 1, 'Black', 'Summer', 'Quay', 65);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Cashmere Scarf', 6, 2, 'Oatmeal', 'Winter', 'Quince', 60);
+
+INSERT INTO items (item_name, category_id, location_id, color, season, brand, price)
+VALUES ('Leather Belt', 6, 3, 'Brown', 'All', 'Madewell', 58);
+
+COMMIT;
+
+-- Check
+
+SELECT *
+FROM items
+ORDER BY item_id ASC;
