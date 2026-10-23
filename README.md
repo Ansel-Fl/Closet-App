@@ -55,7 +55,7 @@ That turned into six tables. One design choice: an outfit has many items, and on
 - 
 ## What's next
 
-- Run SQL Reports
+- Run SQL Reports (tried to run the first report query as of 6am CT 10/23 but Oracle Free SQL is down)
 - PowerShell script automation on local storage
 - A simple web app so she can browse her closet and plan outfits from her phone
 
