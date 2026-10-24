@@ -1,0 +1,7 @@
+-- ALL Items (90)
+SELECT * FROM ITEMS
+
+--ALL BLACK ITEMS
+SELECT item_name, brand
+FROM items
+WHERE color = 'Black';
