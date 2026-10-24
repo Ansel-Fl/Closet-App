@@ -289,3 +289,35 @@ FROM items
 WHERE item_name IN ('Oversized Long Sleeve', 'Effortless Pant', 'New Balance 530', 'Black Leather Tote');
 
 COMMIT;
+
+INSERT INTO wear_log (item_id, worn_date, occasion)
+SELECT item_id, DATE '2026-10-22', 'Errands'
+FROM items
+WHERE item_name IN ('Oversized Long Sleeve', 'Straight Leg Jeans', 'Cropped Puffer', 'Adidas Gazelle', 'Cashmere Scarf');
+
+INSERT INTO wear_log (item_id, worn_date, occasion)
+SELECT item_id, DATE '2026-10-23', 'Date'
+FROM items
+WHERE item_name IN ('Knit Midi Dress', 'Long Wool Coat', 'Tecovas Annie Boot (Black)', 'Gold Hoop Earrings');
+
+COMMIT;
+
+-- LOGGING PAST TWO DAYS OUTFIT AND CHECKING
+
+INSERT INTO wear_log (item_id, worn_date, occasion)
+SELECT item_id, DATE '2026-10-22', 'Errands'
+FROM items
+WHERE item_name IN ('Oversized Long Sleeve', 'Straight Leg Jeans', 'Cropped Puffer', 'Adidas Gazelle', 'Cashmere Scarf');
+
+INSERT INTO wear_log (item_id, worn_date, occasion)
+SELECT item_id, DATE '2026-10-23', 'Date'
+FROM items
+WHERE item_name IN ('Knit Midi Dress', 'Long Wool Coat', 'Tecovas Annie Boot (Black)', 'Gold Hoop Earrings');
+
+COMMIT;
+
+SELECT DISTINCT i.item_name, w.worn_date, w.occasion
+FROM wear_log w
+JOIN items i ON w.item_id = i.item_id
+WHERE w.worn_date >= DATE '2026-10-22'
+ORDER BY w.worn_date, i.item_name;
