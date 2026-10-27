@@ -10,4 +10,82 @@ WHERE color = 'Black';
 SELECT * FROM ITEMS
 WHERE LOCATION_ID = 1;
 
-MORE ON THE WAY!
+--MOST EXPENSIVE OUTFIT
+SELECT o.outfit_name,
+COUNT(i.item_id) AS item_count,
+SUM(COALESCE(i.price, 0)) AS outfit_total
+FROM outfits o
+JOIN outfit_items oi ON o.outfit_id = oi.outfit_id
+JOIN items i ON oi.item_id = i.item_id
+GROUP BY o.outfit_name
+ORDER BY outfit_total DESC
+FETCH FIRST 1 ROW ONLY;
+
+--EVERYTHING OVER $100
+SELECT item_name, brand, price
+FROM items
+WHERE price > 100
+ORDER BY price DESC;
+
+--EVERY "Jeans" ITEM
+SELECT item_name, color, brand
+FROM items
+WHERE UPPER(item_name) LIKE '%JEANS%';
+
+--ALL COLORS LISTED ONCE
+SELECT DISTINCT color
+FROM items
+ORDER BY color;
+
+--ITEMS PER BRAND
+SELECT brand, COUNT(*) AS item_count
+FROM items
+GROUP BY brand
+ORDER BY item_count DESC, brand;
+
+--ITEMS PER LOCATION
+SELECT l.location_name, COUNT(i.item_id) AS item_count
+FROM locations l
+LEFT JOIN items i ON l.location_id = i.location_id
+GROUP BY l.location_name
+ORDER BY item_count DESC;
+
+--ITEMS PER SEASON
+SELECT season, COUNT(*) AS item_count
+FROM items
+GROUP BY season
+ORDER BY item_count DESC;
+
+--BRANDS WHERE 300+ WAS SPENT
+SELECT brand, COUNT(*) AS item_count, SUM(price) AS total_spent
+FROM items
+GROUP BY brand
+HAVING SUM(price) > 300
+ORDER BY total_spent DESC;
+
+--PRICE TIERS
+SELECT CASE
+           WHEN price < 50 THEN 'Budget (under $50)'
+           WHEN price < 150 THEN 'Mid ($50 to $149)'
+           ELSE 'Splurge ($150+)'
+       END AS price_tier,
+       COUNT(*) AS item_count
+FROM items
+WHERE price IS NOT NULL
+GROUP BY CASE
+             WHEN price < 50 THEN 'Budget (under $50)'
+             WHEN price < 150 THEN 'Mid ($50 to $149)'
+             ELSE 'Splurge ($150+)'
+         END
+ORDER BY item_count DESC;
+
+--DAYS LOGGED
+SELECT EXTRACT(YEAR FROM worn_date) AS year_worn,
+       EXTRACT(MONTH FROM worn_date) AS month_worn,
+       COUNT(DISTINCT worn_date) AS days_logged,
+       COUNT(*) AS items_worn
+FROM wear_log
+GROUP BY EXTRACT(YEAR FROM worn_date), EXTRACT(MONTH FROM worn_date)
+ORDER BY year_worn, month_worn;
+
+--WAITING FOR MORE DATA TO BE LOGGED BASED ON OUTFIT USAGE
