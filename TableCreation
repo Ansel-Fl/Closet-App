@@ -321,3 +321,24 @@ FROM wear_log w
 JOIN items i ON w.item_id = i.item_id
 WHERE w.worn_date >= DATE '2026-10-22'
 ORDER BY w.worn_date, i.item_name;
+
+
+-- LOGGING TWO MORE OUTFITS
+INSERT INTO outfits (outfit_name, occasion) VALUES ('Lazy Saturday', 'Lounging');
+INSERT INTO outfits (outfit_name, occasion) VALUES ('Sunday Stroll', 'Casual');
+
+INSERT INTO outfit_items (outfit_id, item_id)
+SELECT o.outfit_id, i.item_id
+FROM outfits o
+CROSS JOIN items i
+WHERE o.outfit_name = 'Lazy Saturday'
+AND i.item_name IN ('Oversized Long Sleeve', 'Effortless Pant', 'UGG Tasman Slippers', 'Claw Clip');
+
+INSERT INTO outfit_items (outfit_id, item_id)
+SELECT o.outfit_id, i.item_id
+FROM outfits o
+CROSS JOIN items i
+WHERE o.outfit_name = 'Sunday Stroll'
+AND i.item_name IN ('Striped Blue Long Sleeve', 'Align Leggings', 'New Balance 1080s', 'Black Leather Tote');
+
+COMMIT;
