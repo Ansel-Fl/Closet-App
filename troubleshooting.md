@@ -91,3 +91,76 @@ WHERE o.outfit_name = 'Date Night'
 The o and i are aliases, short names for the tables, so o.outfit_id means the outfit_id column from outfits.
 
 **Takeaway:** CROSS JOIN lets SQL find the IDs by name. It should have a WHERE or it creates every possible combination.
+
+---
+
+## 7. Finding the Most Expensive Outfit
+
+**Problem:** I wanted to find the most expensive outfit by adding up the price of every item in each outfit. My first query failed with ORA-00979: not a GROUP BY expression.
+
+**What I checked:** I compared the columns in my SELECT to the columns in my GROUP BY. I was selecting outfit_name and item_name but only grouping by outfit_name.
+
+**Cause:** GROUP BY condeses all the items in an outfit into one row so SUM can add their prices. item_name is different for each item, so Oracle couldn't fit them into that single row. Every column in the SELECT has to be in the GROUP BY or inside a function like SUM or COUNT.
+
+**Fix:** I removed item_name and added a count of items, sorted by the total, and kept only the top row.
+
+**What I'd do differently:** Decide what one row should represent before writing a GROUP BY (here, one outfit). Anything that's different per item goes inside a function or into its own query.
+
+---
+
+## 8. Filtering Brands by Total Spent
+
+**Problem:** This one was particularly hard. I wanted brands she has spent more than $300 on. I wrote WHERE SUM(price) > 300 and got ORA-00934: group function is not allowed here.
+
+**What I checked:** The error pointed at SUM in my WHERE clause.
+
+**Cause:** WHERE filters individual rows before they're grouped so the SUM for each brand doesn't exist yet at that point. Filtering on a total has to happen after GROUP BY.
+
+**Fix:** Moved the condition to HAVING:
+
+**What I'd do differently:** Use WHERE to filter rows (like price > 100) and HAVING to filter totals (like SUM(price) > 300).
+
+---
+
+## 9. Searching Item Names
+
+**Problem:** I searched for jeans with `WHERE item_name LIKE '%jeans%'`(which I did not onclude the containing %). There was no error, but it returned no rows, even though my wife has three pairs.
+
+**What I checked:** I ran SELECT item_name FROM items; and saw the names were stored as "Straight Leg Jeans," with a capital J.
+
+**Cause:** Text comparisons in Oracle are case-sensitive, so 'jeans' doesn't match 'Jeans'.
+
+**Fix:** Converted the column to uppercase and searched in uppercase:
+
+
+**What I'd do differently:** Use UPPER on both sides for any text search. A query that runs without an error isn't always correct so I check whether the result makes sense.
+
+---
+
+## 10. Filtering by Color
+
+**Problem:** WHERE color = "Black" failed with ORA-00904: "Black": invalid identifier.
+
+**What I checked:** The error called "Black" an identifier which is the word Oracle uses for a column or table name.
+
+**Cause:** In Oracle double quotes mean a name (like a column) and single quotes mean text so Oracle searched for a column called Black.
+
+**Fix:** I changed it to single quotes: `WHERE color = 'Black'`
+
+**What I'd do differently:** Single quotes for values, every time. The practice site I learned on accepted double quotes so I've built this habit.
+
+---
+
+## 11. Selecting Multiple Columns
+
+**Problem:** SELECT item_name brand price FROM items failed with ORA-00923: FROM keyword not found where expected.
+
+**What I checked:** The columns in my SELECT. There were no commas between them.
+
+**Cause:** Without a comma, Oracle read `brand` as a nickname (alias) for `item_name`. Then it hit `price` and expected the word FROM instead.
+
+**Fix:** Added commas: SELECT item_name, brand, price FROM items
+
+**What I'd do differently:** Look at the commas first when an error mentions FROM. A missing comma can quietly rename a column instead of erroring which is harder.
+
+---
